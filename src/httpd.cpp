@@ -19,7 +19,7 @@ int SetupTCPServerSocket(unsigned short port) {
     if ((servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
         DieWithError("socket() failed");
     
-    // Construct the server address structure
+    /* Construct the server address structure */
     struct sockaddr_in servAddr; // Criteria for address match
     memset(&servAddr, 0, sizeof(servAddr));   /* Zero out structure */
     servAddr.sin_family = AF_INET;            /* Internet address family */

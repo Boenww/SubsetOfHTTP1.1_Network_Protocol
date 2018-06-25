@@ -28,9 +28,7 @@ int SendResponse(Response response, FILE *out, char *buf) {
     if (fwrite(buf, sizeof(char), responseStr.size(), out) < responseStr.size())
     {
         return -1;
-    }
-    else
-    {
+    } else {
         fflush(out);
         return 0;
     }
@@ -66,18 +64,18 @@ ssize_t GetContentLen(string path) {
 
 string GetContentType(string path) {
     ssize_t dotIndex = path.rfind(".");
-    string suf = path.substr(dotIndex, path.size() - dotIndex);
-    if (suf == ".jpg") {
+    string suff = path.substr(dotIndex, path.size() - dotIndex);
+    if (suff == ".jpg") {
         return "image/jpeg";
-    } else if (suf == ".png") {
+    } else if (suff == ".png") {
         return "image/png";
-    } else if (suf == ".html") {
+    } else if (suff == ".html") {
         return "text/html";
     }
     return "unknown";
 }
 
-bool Exist(const std::string &path)
+bool Exist(string &path)
 {
     struct stat buf;
     return (stat (path.c_str(), &buf) == 0);
@@ -96,10 +94,10 @@ bool Access(string path)
     }
 }
 
-int HandleInst(Instruction inst, int clntSocket, const string &doc_root, FILE *out, char *buf) {
+int HandleInst(Instruction inst, int clntSocket, string &doc_root, FILE *out, char *buf) {
     Response response;
     response.version = "HTTP/1.1";
-    response.kvPairs["Server"] = "0.0";
+    response.kvPairs["Server"] = "localhost";
     
     if (inst.valid == false || !inst.kvPairs.count("Host")) { // == inst.kvPairs.end()
         response.code = "400";
@@ -137,7 +135,7 @@ int HandleInst(Instruction inst, int clntSocket, const string &doc_root, FILE *o
             if (SendResponse(response, out, buf) == -1)
                 return -1;
             fflush(out);
-        } else if (pathFromURL.find(GetAbsPath(doc_root)) != 0 && pathFromURL != "") {
+        } else if (pathFromURL != "" && pathFromURL.find(GetAbsPath(doc_root)) != 0) {
             response.code = "404";
             response.text = "Not Found";
          

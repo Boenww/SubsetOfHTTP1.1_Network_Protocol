@@ -42,7 +42,7 @@ void Framer::popMessage()
 
 void Framer::printToStream(ostream& stream) const
 {
-    // useful for debugging
+    //debug
     stream << "== Print To Stream BEG ==" << endl;
     for (auto itor = msgQueue.begin(); itor != msgQueue.end(); ++itor) {
         stream << '"' << *itor << '"' << endl;
